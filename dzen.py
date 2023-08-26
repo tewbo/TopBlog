@@ -120,9 +120,9 @@ def do_main(*args):
 
 def test():
     with open('dzen.test', 'w') as file:
-        for filename in os.listdir('images'):
+        for filename in os.listdir('images_dzen'):
             try:
-                result = do_main('kekw', 'images/' + filename)
+                result = do_main('kekw', 'images_dzen/' + filename)
             except Exception as ex:
                 print(ex)
                 continue
