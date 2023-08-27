@@ -20,27 +20,19 @@ def create_table(option):
 def add_to_table(data, filename, result, option):
     match option:
         case 'tg':
-            data = data.append({'VR': result, 'image': filename}, ignore_index=True)
+            data.loc[data.shape[0]] = {'VR': result, 'image': filename}
         case 'vk':
-            data = data.append({'Количество подписчиков': result, 'image': filename}, ignore_index=True)
+            data.loc[data.shape[0]] = {'Количество подписчиков': result, 'image': filename}
         case 'zn':
-            data = data.append({'Количество дочитываний': result, 'image': filename}, ignore_index=True)
+            data.loc[data.shape[0]] = {'Количество дочитываний': result, 'image': filename}
         case 'yt1':
-            data = data.append({'Количество подписчиков': result, 'image': filename}, ignore_index=True)
+            data.loc[data.shape[0]] = {'Количество подписчиков': result, 'image': filename}
         case 'yt2':
-            data = data.append({'Просмотры за месяц': result, 'image': filename}, ignore_index=True)
+            data.loc[data.shape[0]] = {'Просмотры за месяц': result, 'image': filename}
     return data
 
 
 def save_table(data, option):
-    match option:
-        case 'tg':
-            data.to_excel('tg.xlsx', index=False)
-        case 'vk':
-            data.to_excel('vk.xlsx', index=False)
-        case 'zn':
-            data.to_excel('zn.xlsx', index=False)
-        case 'yt1':
-            data.to_excel('yt1.xlsx', index=False)
-        case 'yt2':
-            data.to_excel('yt2.xlsx', index=False)
+    table_name = option + '.xlsx'
+    data.to_excel(table_name, index=False)
+    return table_name

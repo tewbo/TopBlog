@@ -4,33 +4,11 @@ import easyocr
 import numpy as np
 from PIL import Image
 
-import yandex_cloud as yc
-
 
 def ocr(image):
     reader = easyocr.Reader(['ru'])
     results = reader.readtext(np.array(image))
     return results
-
-
-def yandex_ocr(image):
-    folder_id = os.getenv('YC_FOLDER_ID')
-    iam = os.getenv('YC_IAM')
-    parsed_blocks = yc.parse([image], folder_id, iam)
-    data = []
-    for block in parsed_blocks[0]:
-        for word_block in block['lines']:
-            vertices = word_block['boundingBox']['vertices']
-            text = word_block['text']
-            cords = []
-            try:
-                for v in vertices:
-                    cords.append([int(v['x']), int(v['y'])])
-                cords[1], cords[3] = cords[3], cords[1]
-                data.append((cords, text, 1))
-            except:
-                continue
-    return data
 
 
 def to_words(results):
@@ -66,8 +44,6 @@ def crop_for_subs(image, results):
 
     if not found:
         cropped_image = image
-    cropped_image.save('tmp/cropped.png', 'PNG')
-    cropped_image = Image.open('tmp/cropped.png')
     return cropped_image
 
 
@@ -78,10 +54,10 @@ def is_not_counted(words_list):
 
 
 def detect_subs(words_list):
-    subs = 0
+    subs = None
     if words_list[0] == 'аналитика по каналу':
         idx = words_list.index('подписчики') + 1
-        subs = int(words_list[idx])
+        subs = words_list[idx]
 
     elif words_list[0] == 'текущая статистика':
         idx = words_list.index('подписчики') - 1
@@ -149,8 +125,6 @@ def crop_for_views(image, results):
 
     if not found:
         cropped_image = image
-    cropped_image.save('tmp/cropped.png', 'PNG')
-    cropped_image = Image.open('tmp/cropped.png')
     return cropped_image
 
 
@@ -180,20 +154,40 @@ def detect_views(words_list):
     return views
 
 
+def parse_image_subscribers(image_path):
+    image = Image.open(image_path)
+    results = ocr(image)
+    word_list = to_words(results)
+    img_cropped_s = crop_for_subs(image, results)
+    subs = detect_subs(to_words(ocr(img_cropped_s)))
+    return subs
+
+
+def parse_image_views(image_path):
+    image = Image.open(image_path)
+    results = ocr(image)
+    word_list = to_words(results)
+    if is_without_views(word_list):
+        return None
+
+    img_cropped_v = crop_for_views(image, results)
+    views = detect_views(to_words(ocr(img_cropped_v)))
+    return views
+
+
 if __name__ == '__main__':
     path = input('Введите путь к файлу: ')
     image = Image.open(path)
-    # results1 = ocr(image)
-    results = yandex_ocr(image)
+    results = ocr(image)
     word_list = to_words(results)
 
     img_cropped_s = crop_for_subs(image, results)
-    subs = detect_subs(to_words(yandex_ocr(img_cropped_s)))
+    subs = detect_subs(to_words(ocr(img_cropped_s)))
     print(f'Количество подписчиков: {subs}')
 
     if is_without_views(word_list):
         print('Информация о просмотрах за месяц не предоставлена')
     else:
         img_cropped_v = crop_for_views(image, results)
-        views = detect_views(to_words(yandex_ocr(img_cropped_v)))
+        views = detect_views(to_words(ocr(img_cropped_v)))
         print(f'Количество просмотров за месяц: {views}')

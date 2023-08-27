@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Файловый загрузчик и обработчик</title>
+</head>
+<body>
+    <h1>Загрузите файл и выберите вариант</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <select name="option" required>
+            <option value="tg">Telegram VR</option>
+            <option value="yt1">Youtube количество подписчиков</option>
+            <option value="yt2">Youtube просмотры за месяц</option>
+            <option value="vk">ВКонтакте подписчики</option>
+            <option value="zn">Дзен количество дочитываний</option>
+        </select>
+        <input type="submit" value="Загрузить и обработать">
+    </form>
+
+    {% if result %}
+        <h2>Результат обработки файла:</h2>
+        <pre>{{ result }}</pre>
+    {% endif %}
+</body>
+</html>

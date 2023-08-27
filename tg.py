@@ -5,7 +5,8 @@ import yandex_cloud as yc
 from PIL import Image
 import os
 
-CHARS_TO_DELETE = [' ']
+CHARS_TO_DELETE = [' ', '%']
+
 
 def get_center(z1, z2):
     (x1, y1) = z1
@@ -40,7 +41,6 @@ def parse_image(image_path):
     # result = reader.readtext(image_path)
 
     folder_id = os.getenv('YC_FOLDER_ID')
-
     iam = os.getenv('YC_IAM')
     image = Image.open(image_path)
 
@@ -95,8 +95,8 @@ def test():
 
 
 def process():
-    # filename = "058a18ba-4c82-48fb-bbef-6d33195e4b3f.PNG"
-    filename = input("filename: ")
+    filename = "a39954ab-6e61-447f-99f5-d3b0e9f1cc5c.png"
+    # filename = input("filename: ")
     print(parse_image("images_tg/" + filename))
 
 

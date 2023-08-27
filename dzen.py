@@ -16,9 +16,6 @@ MAX_WIDTH = 1500
 MAX_HEIGHT = 1500
 MIN_WIDTH = 1000
 MIN_HEIGHT = 1000
-os.environ["YC_FOLDER_ID"] = "b1g4ju1c9nnua4cubmtg"
-os.environ[
-    "YC_IAM"] = "t1.9euelZrGzprGmp2LlcybjZOYmYmLlu3rnpWak5THipCNy56enpaWj5XNkcjl9PcEVFZY-e92HX-q3fT3RAJUWPnvdh1_qs3n9euelZqKmYvJlp7NkY2aksqSzZLPxu_8xeuelZqKmYvJlp7NkY2aksqSzZLPxg.hpCVGd2vO1VkPCfqh3Mn_PmfEDr2DgekYKzkWdjuSYjXNK2_8TUQaBTH8qeqmKkBYKZiU3aAQ-J77xD-b684Dw"
 
 
 def prepare_int(s):
@@ -88,6 +85,13 @@ def process(imgs, folder_id, iam):
         return int(prepare_int(target_block["text"]))
 
     return list(map(lambda x: do(*x), zip(imgs, data)))
+
+
+def parse_image(image_path):
+    folder_id = os.getenv('YC_FOLDER_ID')
+    iam = os.getenv('YC_IAM')
+    img = Image.open(image_path)
+    return process([img], folder_id, iam)[0]
 
 
 def do_main(*args):
