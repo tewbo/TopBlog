@@ -1,11 +1,12 @@
 import os
 import io
 
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, send_from_directory
 from file_processor import process
 
 os.environ["YC_FOLDER_ID"] = "b1g4ju1c9nnua4cubmtg"
-os.environ["YC_IAM"] = "t1.9euelZrIyZ6YyciJi5WWypeRxouene3rnpWak5THipCNy56enpaWj5XNkcjl8_d3RFRY-e9vTB1M_t3z9zdzUVj5729MHUz-zef1656Vmo-Qlp2ZnZ2em8_Im4-alprG7_zF656Vmo-Qlp2ZnZ2em8_Im4-alprG.iFdSknvGFBhltPdSQlE2jjTS7MslWUyAWsylg8v_yAgNFE8h6i-DvKoDKdtQbbCIVBDCwo3Fju_KVwz3Z-WZDg"
+os.environ[
+    "YC_IAM"] = "t1.9euelZrIyZ6YyciJi5WWypeRxouene3rnpWak5THipCNy56enpaWj5XNkcjl8_d3RFRY-e9vTB1M_t3z9zdzUVj5729MHUz-zef1656Vmo-Qlp2ZnZ2em8_Im4-alprG7_zF656Vmo-Qlp2ZnZ2em8_Im4-alprG.iFdSknvGFBhltPdSQlE2jjTS7MslWUyAWsylg8v_yAgNFE8h6i-DvKoDKdtQbbCIVBDCwo3Fju_KVwz3Z-WZDg"
 
 app = Flask(__name__)
 
@@ -38,6 +39,11 @@ def index():
             )
 
     return render_template('index.html', result=result)
+
+
+@app.route('/css/style.css')
+def css():
+    return send_from_directory('css', 'style.css')
 
 
 if __name__ == '__main__':
