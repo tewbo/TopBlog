@@ -4,9 +4,8 @@ import io
 from flask import Flask, render_template, request, Response, send_from_directory
 from file_processor import process
 
-os.environ["YC_FOLDER_ID"] = "b1g4ju1c9nnua4cubmtg"
-os.environ[
-    "YC_IAM"] = "t1.9euelZrIyZ6YyciJi5WWypeRxouene3rnpWak5THipCNy56enpaWj5XNkcjl8_d3RFRY-e9vTB1M_t3z9zdzUVj5729MHUz-zef1656Vmo-Qlp2ZnZ2em8_Im4-alprG7_zF656Vmo-Qlp2ZnZ2em8_Im4-alprG.iFdSknvGFBhltPdSQlE2jjTS7MslWUyAWsylg8v_yAgNFE8h6i-DvKoDKdtQbbCIVBDCwo3Fju_KVwz3Z-WZDg"
+os.environ["YC_FOLDER_ID"] = "b1gm0h08vu8cjto5c7sa"
+os.environ["YC_IAM"] = "t1.9euelZrOnZyNyYmSnJPPlMaWypKPxu3rnpWax5SSmYyQlIqSy8jKz46cy5jl8_d7Yw1R-e9TEB4j_N3z9zsSC1H571MQHiP8zef1656Vmo2bnoucy56YxpiXy8-axomd7_zF656Vmo2bnoucy56YxpiXy8-axomd.37xTAMhoxpkLWOzUmzfglTKIUcwvQfDWSy4Omc4HeR3MrGWjfA_ROxEr5yCOnyOQe3jstnkEc71urCMRnJA-BQ"
 
 app = Flask(__name__)
 
@@ -47,4 +46,4 @@ def css():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

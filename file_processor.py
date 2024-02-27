@@ -8,9 +8,19 @@ import os
 import zipfile
 import shutil
 import extracter
+from datetime import datetime
+from get_iam import get_token
+
+last_date = datetime.now()
 
 
 def parse_single(fp, mode):
+    global last_date
+    if datetime.now() > last_date:
+        resp = get_token()
+        os.environ["YC_IAM"] = resp['iamToken']
+        last_date = resp['expiresAt']
+        print(last_date)
     match mode:
         case 'tg':
             result = tg.parse_image(fp)
